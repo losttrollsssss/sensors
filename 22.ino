@@ -1,5 +1,5 @@
-#define PIN_LED 6
-#define PIN_PHOTO_SENSOR A0
+#define PIN_LED 1
+#define PIN_PHOTO_SENSOR A2
 void setup() {
   Serial.begin (9600);
   pinMode(PIN_LED, OUTPUT);
