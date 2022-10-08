@@ -9,7 +9,6 @@ void setup() {
   Serial.begin(9600);
   pinMode(led_pin, OUTPUT);
 }
-
 void loop() {
   unsigned long currentMillis = millis();
   int val = analogRead(sensor_pin);
@@ -28,5 +27,4 @@ void loop() {
       ledState = LOW;
     digitalWrite(led_pin, ledState);
   }
-
 }
