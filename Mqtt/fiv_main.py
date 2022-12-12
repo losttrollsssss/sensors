@@ -1,37 +1,57 @@
 import time
-
 import paho.mqtt.client as mqtt_client
-from statistics import mean
+import random
 import serial
 
+buffer = []
 my_id = 111
-values = []
-initial = True
+min = 100
+max = 0
 
 def get_connection(port):
     ser = serial.Serial(port, timeout=1)
     return ser
 
-client = mqtt_client.Client()
+def on_message(client, userdata, message):
+    global max
+    global min
+    data = message.payload
+    topic = message.topic
+    print(f"Received message on {topic}: {data}. min: {min}, max: {max}")
+
+    if topic == "lab/%s/photo/max" % my_id:
+        max = int(data)
+
+    if topic == "lab/%s/photo/min" % my_id:
+        min = int(data)
+
+    if topic == "lab/%s/photo/stream" % my_id:
+        if int(data) < (min + max) / 2:
+            ser.write(bytearray([ord('1')]))
+        else:
+            ser.write(bytearray([ord('0')]))
 
 broker = "broker.emqx.io"
+
+client = mqtt_client.Client(f'lab_{random.randint(10000, 99999)}')
+client.on_message = on_message
+
 try:
     client.connect(broker)
 except Exception:
     print('Failed to connect, check network')
     exit()
 
+client.loop_start()
+
+print('Subscribing')
+client.subscribe("lab/%s/photo/stream" % my_id)
+client.subscribe("lab/%s/photo/min" % my_id)
+client.subscribe("lab/%s/photo/max" % my_id)
+
 ser = get_connection('COM8')
 
-while True:
-    if ser.in_waiting > 0:
-        data = ser.read(1)
-        print(data[0])
-        client.publish("lab/%s/photo/instant" % my_id, data[0])
-        if initial:
-            values = [data[0] for i in range(100)]
-            initial = False
-        values.pop(0)
-        values.append(data[0])
-        client.publish("lab/%s/photo/averge" % my_id, mean(values))
-    time.sleep(0.01)
+time.sleep(600)
+client.disconnect()
+client.loop_stop()
+print('Stop communication')
