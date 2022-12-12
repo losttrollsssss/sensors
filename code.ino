@@ -7,7 +7,6 @@
 #define DASH_DURATION 3
 #define DOT_DURATION 1
 
-
 long start_data, start_space;
 long duration[20];
 bool color[20];
@@ -16,7 +15,6 @@ int index=0;
 String CODES[]={".-","--.."};
 char LETTERS[]={'A','Z'};
 int NLETTERS=2;
-
 
 void fill_arrays(){
   int current=digitalRead(DATA_PIN);
@@ -46,9 +44,6 @@ void loop() {
   decode_letters();
 }
 
-
-
-
 void decode_letters(){
   for (int i=0; i<index;i++){
       if (duration[i]==DASH_DURATION and color[i]==SPACE){
@@ -72,9 +67,3 @@ void decode_letters(){
     }
     index=0;
 }
-
-
-
-
-
-
