@@ -2,9 +2,9 @@
 #define DATA_LEVEL LOW
 
 float TU = 1000;
-String ENCODE[] = {".-", "--."};
-char LETTERS[] = {'A','Z'};
-int n_letters = 2;
+String ENCODE[] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+char LETTERS[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+int n_letters = 26;
 void setup() {
   Serial.begin(9600);
   pinMode(DATA_PIN, OUTPUT);
