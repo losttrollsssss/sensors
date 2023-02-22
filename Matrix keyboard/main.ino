@@ -1,9 +1,13 @@
-void setup() {
-  // put your setup code here, to run once:
+const int button= 0;
+int state = 0;
 
+void setup() {
+    Serial.begin(9600);
+    pinMode (button, INPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+    state = analogRead(button);
+    Serial.println(state);
+    delay(150);
 }
